@@ -1,31 +1,42 @@
+// import "./App.css";
+import {TodoCounter}from './components/TodoCounter';
+import {TodoSearch}from './components/TodoSearch';
+import {TodoList}from './components/TodoList';
+import {TodoItem}from './components/TodoItem';
+import { CreateTodoButton } from './components/CreateTodoButton';
 
-import './App.css';
-import Mariana from './components/Mariana'; 
-import Daniel from './components/Daniel'; 
+
+
+
+const todos = [
+
+  { text: 'Hacer tarea', completed: false},
+  { text: 'Comprar ropa', completed: false},
+  { text: 'Vender ', completed: false},
+  { text: 'Hacer la cama ', completed: false},
+
+]
 
 function App() {
-
-
-let num = 2 + 3;
-
+  
+  
 
   return (
-    <div className="App">
-
-      <header className="App-header">
-        <h1>Me la suda</h1>
-        
-        <Mariana/>
-        <p>mi numero es: {num}</p>
-
-        <Daniel/>
-        
-      </header>
-
-
-
-    </div>
+    <>
+      
+    <TodoCounter numeros="2" />
     
+    <TodoSearch/>
+    
+    <TodoList>
+    {todos.map(todo => (<TodoItem  key={todo.text} text={todo.text} />))}
+      
+    </TodoList>
+    <CreateTodoButton/>
+
+   
+    
+    </>
   );
 }
 
