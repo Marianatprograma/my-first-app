@@ -10,8 +10,8 @@ import { CreateTodoButton } from './components/CreateTodoButton';
 
 const todos = [
 
-  { text: 'Hacer tarea', completed: false},
-  { text: 'Comprar ropa', completed: false},
+  { text: 'Hacer tarea', completed: true},
+  { text: 'Comprar ropa', completed: true},
   { text: 'Vender ', completed: false},
   { text: 'Hacer la cama ', completed: false},
 
@@ -24,12 +24,16 @@ function App() {
   return (
     <>
       
-    <TodoCounter numeros="2" />
+    <TodoCounter/>
     
     <TodoSearch/>
     
+    
     <TodoList>
-    {todos.map(todo => (<TodoItem  key={todo.text} text={todo.text} />))}
+    {todos.map(todo => (<TodoItem 
+     key={todo.text}
+     text={todo.text} 
+     completed={todo.completed}/>))}
       
     </TodoList>
     <CreateTodoButton/>
