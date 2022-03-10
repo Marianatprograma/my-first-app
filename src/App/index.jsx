@@ -3,18 +3,79 @@ import React from 'react';
 import { AppUI } from './AppUI';
 
 
-const defaultTodos = [
+// const defaultTodos = [
 
-  { text: 'Hacer tarea', completed: true},
-  { text: 'Comprar ropa', completed: true},
-  { text: 'Vender ', completed: false},
-  { text: 'Hacer la cama ', completed: false},
+//   { text: 'Hacer tarea', completed: true},
+//   { text: 'Comprar ropa', completed: true},
+//   { text: 'Vender ', completed: false},
+//   { text: 'Hacer la cama ', completed: false},
 
-]
+// ]
+
+function useLocalStorage(itemName, initialValue){
+
+  const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+
+  const [item, setItem] =  React.useState(initialValue); 
+
+  React.useEffect(() =>{
+
+    setTimeout(() => {
+
+      try{
+        const localStorageItem = localStorage.getItem(itemName);
+      
+        let parsedItem;
+      
+        if (!localStorageItem){
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          parsedItem = initialValue;
+        }else{
+          parsedItem = JSON.parse(localStorageItem)
+        };
+  
+        setItem(parsedItem)
+        setLoading(false);
+
+      }catch(error){
+        setError(error)
+
+      };
+
+
+    }, 2000)
+  });
+
+
+
+  const saveItem = (newItem) => {
+    try{
+      const stringifiedItem = JSON.stringify(newItem);
+      localStorage.setItem(itemName, stringifiedItem);
+      setItem(newItem);
+
+    }catch(error){
+      setError(error)
+
+    }
+
+
+  };
+  return {
+    item, 
+    saveItem,
+    loading,
+    error
+  
+  };
+
+}
 
 function App() {
-  
-  const [todos, setTodos] =  React.useState(defaultTodos); 
+
+  const {item:todos, saveItem: saveTodos, loading, error} = useLocalStorage('TODOS_V1', []);
+
   const [searchValue, setSearchValue] = React.useState(''); 
 
   const completedTodos = todos.filter(todo => todo.completed).length;
@@ -34,26 +95,30 @@ function App() {
 
     });
 
-  }
+  };
+
 
   const toggleCompleteTodo = (text) => {
     const todoIndex = todos.findIndex(todo => todo.text === text)
     const newTodos = [...todos];
     newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
-    setTodos(newTodos);
+    saveTodos(newTodos);
 
-  }
+  };
   const deleteTodo = (text) => {
     const todoIndex = todos.findIndex(todo => todo.text === text)
     const newTodos = [...todos];
     newTodos.splice(todoIndex,1)
-    setTodos(newTodos);
+    saveTodos(newTodos);
 
-  }
+  };
+
 
 
   return (
     <AppUI
+      loading={loading}
+      error={error}
       totalTodos={totalTodos}
       completedTodos={completedTodos}
       searchValue={searchValue}
