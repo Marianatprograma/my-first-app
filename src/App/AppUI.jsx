@@ -8,21 +8,20 @@ import { CreateTodoButton } from "../CreateTodoButton";
 import { Modal } from "../Modal";
 
 function AppUI() {
-  const { 
+  const {
     error,
-     loading, 
-     searchedTodos, 
-     toggleCompleteTodo, 
-     deleteTodo
-    } = React.useContext(TodoContext);
+    loading,
+    searchedTodos,
+    toggleCompleteTodo,
+    deleteTodo,
+    openModal,
+    setOpenModal,
+  } = React.useContext(TodoContext);
 
   return (
-    
     <>
       <TodoCounter />
-
       <TodoSearch />
-
       <TodoList>
         {error && <p>Hubo un error, desesperate </p>}
         {loading && <p>Estamos cargando, no desesperes </p>}
@@ -39,12 +38,17 @@ function AppUI() {
           />
         ))}
       </TodoList>
+      {openModal && (
+        <Modal>
+          <p>{searchedTodos[0]?.text}</p>
+        </Modal>
+      )}
+      
+      <CreateTodoButton 
+        openModal={openModal}
+        setOpenModal={setOpenModal}
 
-      <Modal>
-        <p>Soy un modal</p>
-      </Modal>
-
-      <CreateTodoButton />
+      />
     </>
   );
 }

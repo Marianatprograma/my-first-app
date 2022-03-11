@@ -1,14 +1,14 @@
 import './CreateTodoButton.css';
 
 
-function CreateTodoButton() {
+function CreateTodoButton(props) {
 
-    const onClickButton = (msg) =>{
-      alert(msg);
+    const onClickButton = () =>{
+     props.setOpenModal(!props.openModal) 
     };
     return (
       <button className='CreateTodoButton'
-      onClick={() => onClickButton('soy el mensaje')}
+      onClick={onClickButton}
       
       >+</button>
       
